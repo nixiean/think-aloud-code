@@ -82,11 +82,47 @@ public class BST{
 		
 	}
 	
+	/*
+	 * Method to check if the tree is balanced
+	 */
+	public static boolean isBalanced(Node root) {
+		if(root== null)
+			return true; 
+		
+		if (isBalancedHeight(root)==-1)
+			return false;
+		
+		return true;
+	}
+	
+	/*
+	 * Method to see if the sub trees are balanced 
+	 */
+	public static int isBalancedHeight(Node root) {
+		if(root== null)
+			return 0; 
+		
+		int left = isBalancedHeight(root.left);
+		int right = isBalancedHeight(root.right);
+		
+		if(left==-1||right==-1)
+			return -1;
+		
+		if(Math.abs(left-right)>1)
+			return -1;
+		
+		return Math.max(left , right) + 1;
+		
+	}
+
 	//Driver for the binary tree operations 
 	public static void main(String []args) {
-		int input[] = {4,2,1,3,6,5,7};
-		for (int i = 0 ; i< input.length ; i++)
+		int input[] = {1,2,3,4,6,5,7};
+		System.out.print("Input: ");
+		for (int i = 0 ; i< input.length ; i++) {
 			createBST(input[i]);
+			System.out.print(input[i]);
+		}
 		System.out.println("\nInorder traversal of tree");
 		inorderBST(root);
 		System.out.println("\nPostorder traversal of tree");
@@ -97,6 +133,10 @@ public class BST{
 			System.out.println("\n Binary tree is a Binary search tree");
 		else 
 			System.out.println("\n Binary tree is not a Binary search tree");
+		if(isBalanced(root)) 
+			System.out.println("\n Binary tree is balanced");
+		else 
+			System.out.println("\n Binary tree is not balanced");
 	}
 }
 
