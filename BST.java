@@ -1,9 +1,9 @@
 //Class for a Binary Search Tree
 public class BST{
-	
+
 	//Reference to root node of the tree
 	static public Node root;
-	
+
 	/*
 	 * Create a simple binary tree 
 	 */
@@ -33,7 +33,7 @@ public class BST{
 			}
 		}
 	}
-	
+
 	/*
 	 * Method to print Inorder traversal of binary tree
 	 */
@@ -44,7 +44,7 @@ public class BST{
 			inorderBST(root.right);
 		}
 	}
-	
+
 	/*
 	 * Method to print Preorder traversal of binary tree
 	 */
@@ -55,7 +55,7 @@ public class BST{
 			preorderBST(root.right);
 		}
 	}
-	
+
 	/*
 	 * Method to print Postorder traversal of binary tree
 	 */
@@ -66,7 +66,7 @@ public class BST{
 			System.out.print(" " + root.data);
 		}
 	}
-	
+
 	/*
 	 * Method to check if the binary tree is a binary search tree
 	 */
@@ -74,12 +74,12 @@ public class BST{
 		if(root == null )
 			return true;
 		else {
-			if((root.left!=null && root.data < root.left.data) || 
-				( root.right!=null && root.data > root.right.data ))
+			if((root.left!=null && root.data <= root.left.data) || 
+					( root.right!=null && root.data >= root.right.data ))
 				return false;
-			else return (checkBST(root.left) || checkBST(root.left));
+			else return (checkBST(root.left) && checkBST(root.left));
 		}
-		
+
 	}
 	
 	/*
@@ -111,32 +111,75 @@ public class BST{
 		if(Math.abs(left-right)>1)
 			return -1;
 		
-		return Math.max(left , right) + 1;
-		
+		return Math.max(left , right) + 1;		
 	}
 
+	/*
+	 * Method to get the minimum depth
+	 * (Number of nodes along the shortest path 
+	 * from the root node down to the nearest leaf node) 
+	 */
+    public static int minDepth(Node root) {
+        if(root == null) 
+            return 0;
+            
+        if(root.left == null)  
+            return minDepth(root.right) + 1;
+        
+        if(root.right == null)
+            return minDepth(root.left) + 1;
+        
+        return Math.min(minDepth(root.left),minDepth(root.right))+1;
+    }
+
+	/*
+	 * Method to determine if the tree has a root-to-leaf path 
+	 * such that adding up all the values along the path equals the given sum. 
+	 */
+    public static boolean hasPathSum(Node root, int sum) {
+        if(root == null)
+            return false;
+        
+        if(root.left == null && root.right == null) {
+            if ((sum-root.data) == 0) 
+                return true;
+            else
+                return false;
+        }
+        else
+        return hasPathSum(root.right,sum - root.data)||hasPathSum(root.left,sum-root.data);
+         }
+    
+    
+	
 	//Driver for the binary tree operations 
 	public static void main(String []args) {
-		int input[] = {1,2,3,4,6,5,7};
+		int input[] = {1,2};
 		System.out.print("Input: ");
 		for (int i = 0 ; i< input.length ; i++) {
 			createBST(input[i]);
-			System.out.print(input[i]);
+			System.out.print(input[i] + " ");
 		}
-		System.out.println("\nInorder traversal of tree");
+		System.out.println("\nInorder traversal of tree:");
 		inorderBST(root);
-		System.out.println("\nPostorder traversal of tree");
+		System.out.println("\nPostorder traversal of tree:");
 		postorderBST(root);
-		System.out.println("\nPreorder traversal of tree");
+		System.out.println("\nPreorder traversal of tree:");
 		preorderBST(root);
 		if(checkBST(root)) 
-			System.out.println("\n Binary tree is a Binary search tree");
+			System.out.println("\nBinary tree is a Binary search tree");
 		else 
-			System.out.println("\n Binary tree is not a Binary search tree");
+			System.out.println("\nBinary tree is not a Binary search tree");
 		if(isBalanced(root)) 
-			System.out.println("\n Binary tree is balanced");
+			System.out.println("\nBinary tree is balanced");
 		else 
-			System.out.println("\n Binary tree is not balanced");
+			System.out.println("\nBinary tree is not balanced");
+		System.out.println("\nMinimum depth of the tree:" + minDepth(root));
+		int pathSum = 28;
+		if(hasPathSum(root, pathSum))
+			System.out.println("\nBinary tree has a path summing to the value: " + pathSum);
+		else 
+			System.out.println("\nBinary tree does not have a path summing to the value: " + pathSum);
 	}
 }
 
@@ -145,7 +188,7 @@ class Node {
 	int data;
 	Node left;
 	Node right;
-	
+
 	//Constructor for Node
 	public Node(int data) {
 		this.data = data;
