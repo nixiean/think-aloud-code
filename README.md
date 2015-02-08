@@ -1,4 +1,6 @@
 think-aloud-code
 ================
 
-Implementations of various problems and concepts. 
+Implementations of various problems and concepts.
+
+
